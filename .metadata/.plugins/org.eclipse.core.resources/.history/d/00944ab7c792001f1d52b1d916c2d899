@@ -1,0 +1,5 @@
+package com.rajesh.pms.portfolio.repository;
+
+public class PortfolioRepository {
+
+}
