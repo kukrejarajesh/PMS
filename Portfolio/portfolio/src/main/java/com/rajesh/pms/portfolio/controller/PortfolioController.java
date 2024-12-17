@@ -3,9 +3,13 @@ package com.rajesh.pms.portfolio.controller;
 
 import com.rajesh.pms.portfolio.entity.Portfolio;
 import com.rajesh.pms.portfolio.service.PortfolioService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,11 +21,28 @@ import java.util.Optional;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
+    final static Logger logger = LoggerFactory.getLogger(PortfolioController.class);
 
     @Autowired
     public PortfolioController(PortfolioService portfolioService) {
         this.portfolioService = portfolioService;
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin")
+    public String helloAdmin() {
+    	logger.info("admin endpoint being called");
+        return "Hellow Admin";
+    }
+    
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user")
+    public String helloUser() {
+    	logger.warn("entering hello user");
+    	logger.error("inside user with error logging");
+        return "Hello User";
+    }
+
 
     // Retrieve all portfolios
     @GetMapping
